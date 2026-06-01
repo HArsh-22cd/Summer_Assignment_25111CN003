@@ -1,0 +1,16 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int a = 0, b = 1, i, N, c;
+    cout << "N is the Number of terms you want in the Fibonacci Series" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    cout << "Series is : ";
+    for(i=0; i<N; i++)  {
+        cout << a << " ";
+        c = a + b;
+        a = b;
+        b=c;
+    }
+    return 0;
+}
