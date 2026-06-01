@@ -1,0 +1,23 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int sum, N, digit, original;
+    cout << "N is the range in which you want all Armstrong numbers" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    cout << "Armstrong Numbers in the range are: ";
+    for (int i=0; i<=N; i++) {
+        sum = 0;
+        original = i;
+        int temp = i;
+    while(temp > 0) {
+    digit = temp % 10;
+    sum += digit * digit * digit;
+    temp = temp/10;
+    }
+    if(sum  == original){
+        cout << original << ", ";
+    }
+}
+    return 0;
+}
