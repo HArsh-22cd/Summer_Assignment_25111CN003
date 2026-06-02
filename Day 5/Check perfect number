@@ -1,0 +1,17 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int N, sum=0;
+    cout << "N is the number you want to check whether it is perfect or not" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    for(int i=1; i<N; i++) {
+        if(N%i == 0)
+        sum += i;
+    }
+    if(sum == N)
+    cout << N << " is a PERFECT Number.";
+    else
+    cout << N << " is NOT a PERFECT Number";
+    return 0;
+}
