@@ -1,0 +1,26 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int N, sum=0, factors, isPrime, largestPrime = -1;
+    // We set largestPrime to -1 because we haven't found any prime factor yet at the start.
+    cout << "N is the number you want to check whether it is perfect or not" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    for(int i=2; i<=N; i++) {
+        factors = N%i;
+        if(factors == 0) {
+        isPrime = 1;
+        for(int j = 2; j <=i/2; j++) {  
+             if(i % j == 0) {             
+                 isPrime = 0;             
+                 break;                   
+                }
+            }
+            if(isPrime == 1)
+             largestPrime = i;
+            
+        }
+    }
+    cout << "Largest Prime Factor is: " << largestPrime;
+    return 0;
+}
