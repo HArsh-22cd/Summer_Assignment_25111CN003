@@ -1,0 +1,23 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int N, sum=0, digit, fact, org;
+    cout << "N is the number you want to check whether it is strong or not" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    org = N;
+    while(org>0) {
+       digit = org%10;
+       org = org/10;
+       fact=1;
+       for(int i=1; i<=digit; i++) {
+         fact *= i;
+        }
+        sum += fact;
+    }
+    if(sum == N)
+    cout << N << " is a STRONG Number.";
+    else
+    cout << N << " is NOT a STRONG Number";
+    return 0;
+}
