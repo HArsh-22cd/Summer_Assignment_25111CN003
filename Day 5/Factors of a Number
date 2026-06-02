@@ -2,7 +2,7 @@
 using namespace std;
 int main() {
     int N, sum=0, factors, i;
-    cout << "N is the number you want to check whether it is perfect or not" << endl;
+    cout << "N is the number you want factor of" << endl;
     cout << "Enter N: ";
     cin >> N;
     cout << "Factors of the number are : ";
