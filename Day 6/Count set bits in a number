@@ -1,0 +1,17 @@
+#include<iostream>
+using namespace std;
+int main() {
+    long long N, digit, count=0;
+    cout << "N is the Binary Number you want to count set bits of" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    while(N>0) {
+      digit = N%10;
+      N = N/10;
+      if(digit==1) {
+          count++;
+        }  
+    }
+    cout << "Total Set Bits in the number are: " << count;
+    return 0;
+}
