@@ -1,0 +1,15 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int x, n, Result=1;
+    cout << "For the expression 'x^n' enter 'x' and 'n'" << endl;
+    cout << "Enter x: ";
+    cin >> x;
+    cout << "Enter n: ";
+    cin >> n;
+    for(int i=1; i<=n; i++ ) {
+     Result *= x;
+    }
+    cout << "Result = " << Result;
+    return 0;
+}
