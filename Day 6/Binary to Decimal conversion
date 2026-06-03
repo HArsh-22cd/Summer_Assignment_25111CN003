@@ -1,0 +1,17 @@
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main() {
+    int N, digit, sum=0, position=0;
+    cout << "N is the Binary Number you want to convert in Decimal" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    while(N>0) {
+      digit = N%10;
+      sum += digit * (int)pow(2, position);
+      N = N/10;
+      position++;
+    }
+    cout << "Decimal: " << sum;
+    return 0;
+}
