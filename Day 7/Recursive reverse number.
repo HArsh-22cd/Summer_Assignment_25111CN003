@@ -1,0 +1,22 @@
+#include<iostream>
+#include<cmath>
+using namespace std;
+int reverse(int N, int len) {
+    if(N==0) {
+       return 0;
+    }
+    return (N%10) * pow(10, len-1) + reverse(N/10, len-1);
+}
+int main() {
+    int N, len=0, original;
+    cout << "N is the Number whose reverse you want" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    original = N;
+    while(original!=0) {
+        len++;
+        original = original/10;
+    }
+    cout << "Reverse of the Number = " << reverse(N, len); 
+    return 0;
+}
