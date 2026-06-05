@@ -1,7 +1,8 @@
 #include<iostream>
+#include<cmath>
 using namespace std;
 int main() {
-    int sum, N, digit, original;
+    int sum, N, digit, original, numDigits;
     cout << "N is the range in which you want all Armstrong numbers" << endl;
     cout << "Enter N: ";
     cin >> N;
@@ -10,10 +11,16 @@ int main() {
         sum = 0;
         original = i;
         int temp = i;
+        numDigits = 0;
     while(temp > 0) {
-    digit = temp % 10;
-    sum += digit * digit * digit;
-    temp = temp/10;
+    numDigits++;
+    temp /= 10;
+    }
+    temp = i;
+    while (temp > 0) {
+        digit = temp % 10;
+        sum += pow(digit, numDigits);
+        temp /= 10;
     }
     if(sum  == original){
         cout << original << ", ";
