@@ -1,16 +1,22 @@
 #include<iostream>
+#include<cmath>
 using namespace std;
 int main() {
-    int sum=0, N, digit, original;
+    int sum=0, N, digit, original, numDigits=0;
     cout << "N is the number you want to check its Armstrong or not" << endl;
     cout << "Enter N: ";
     cin >> N;
     original = N;
-    while(N>0) {
-    digit = N%10;
-    sum += digit * digit * digit;
-    N = N/10;
+    int temp = N;
+    while(temp > 0) {
+    numDigits++;
+    temp /= 10;
     }
+    temp = N;
+    while(temp > 0) {
+        digit = temp % 10;
+        sum += pow(digit, numDigits);
+        temp /= 10;
     if(sum==original) {
       cout << original << " is an Armstrong Number" << endl;
     }
