@@ -1,0 +1,18 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int i, j, N;
+    cout << "N is the length of the hollow square" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    for(i=1; i<=N; i++) {
+        for(j=1; j<=N; j++) {
+            if(i==1 || i==N || j==1 || j==N)
+                cout << "*";
+            else
+                cout << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}
