@@ -1,0 +1,15 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int i, j, N;
+    cout << "N is the number of Row you want in the Pyramid" << endl;
+    cout << "Enter N: ";
+    cin >> N;
+    for(i=N; i>=1; i--) {
+        for(j=0; j<i; j++) {
+            cout << "*";
+        }
+        cout << endl;
+    }
+    return 0;
+}
