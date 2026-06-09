@@ -1,0 +1,21 @@
+#include<iostream>
+using namespace std;
+int getFibonacci(int a) {
+  int x=0, y=1, z;
+for(int i=0; i<a; i++ ) {
+    cout << x << " ";
+    z = x + y;
+    x = y;
+    y = z;
+}
+   return x;
+}
+int main() {
+    int a;
+    cout << "a is a number of term you want in Fibonacci Series" << endl;
+    cout << "Enter a : ";
+    cin >> a;
+    cout << "Series is : " << endl;
+    cout << getFibonacci(a) << endl;
+    return 0;
+}
