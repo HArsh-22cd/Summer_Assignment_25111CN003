@@ -1,0 +1,25 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int N, i, arr[10], sum=0;
+    float avg;
+    cout << "N is the number of element in Array" << endl;
+    cout << "Enter N : ";
+    cin >> N;
+    cout << "Enter each elements of the Array : " << endl;;
+    for(i=0; i<N; i++) {
+       cin >> arr[i];
+    }
+    cout << "Array : "; 
+    for(i=0; i<N; i++) {
+       cout << arr[i] << " ";
+    }
+    cout << endl;
+    for(i=0; i<N; i++) {
+      sum += arr[i];
+    }
+    cout << "Sum of the element = " << sum << endl;
+    avg = (float)sum/N;
+    cout << "Average of the elements = " << avg;
+    return 0;
+}
