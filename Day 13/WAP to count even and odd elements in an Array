@@ -1,0 +1,26 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int N, i, arr[10], count1=0, count2=0;
+    cout << "N is the number of element in Array" << endl;
+    cout << "Enter N : ";
+    cin >> N;
+    cout << "Enter each elements of the Array : " << endl;;
+    for(i=0; i<N; i++) {
+       cin >> arr[i];
+    }
+    cout << "Array : "; 
+    for(i=0; i<N; i++) {
+       cout << arr[i] << " ";
+    }
+    cout << endl;
+    for(i=0; i<N; i++) {
+        if(arr[i]%2==0) 
+            count1++;
+        if(arr[i]%2!=0)
+           count2++;
+    }
+    cout << "Even elements = " << count1 << endl;
+    cout << "Odd elements = " << count2;
+    return 0;
+}
