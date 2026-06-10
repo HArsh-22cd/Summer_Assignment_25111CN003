@@ -1,0 +1,17 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int N, i, arr[10];
+    cout << "N is the number of element in Array" << endl;
+    cout << "Enter N : ";
+    cin >> N;
+    cout << "Enter each elements of the Array : " << endl;;
+    for(i=0; i<N; i++) {
+       cin >> arr[i];
+    }
+    cout << "OUTPUT : "; 
+    for(i=0; i<5; i++) {
+       cout << arr[i] << " ";
+    }
+    return 0;
+}
