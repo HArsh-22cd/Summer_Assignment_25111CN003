@@ -1,0 +1,32 @@
+#include<iostream>
+using namespace std;
+int main () {
+      int N, i;
+    cout << "N is the number of elements in Array" << endl;
+    cout << "Enter N : ";
+    cin >> N;
+    int arr[N];
+    cout << "Enter each elements of the Array : " << endl;;
+    for(i=0; i<N; i++) {
+       cin >> arr[i];
+    }
+    cout << "OUTPUT : "; 
+    for(i=0; i<N; i++) {
+       cout << arr[i] << " ";
+    }
+    cout << endl;
+    int largest = INT_MIN, secondLargest = INT_MIN;
+    for(i=0; i<N; i++) {
+        if(arr[i] > largest) {
+            secondLargest = largest;
+            largest = arr[i];
+        } else if(arr[i] > secondLargest && arr[i]!= largest) {
+            secondLargest = arr[i];
+        }
+    }
+    if(secondLargest == INT_MIN)
+    cout << "No second largest element (all elements are equal or only one element)"<< endl;
+    else
+    cout << "Second largest element:  " << secondLargest << endl;
+    return 0;
+}
