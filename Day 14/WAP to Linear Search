@@ -1,0 +1,32 @@
+#include<iostream>
+using namespace std;
+int main () {
+      int N, i, key, flag=-1, count=0;
+    cout << "N is the number of elements in Array" << endl;
+    cout << "Enter N : ";
+    cin >> N;
+    int arr[N];
+    cout << "Enter each elements of the Array : " << endl;;
+    for(i=0; i<N; i++) {
+       cin >> arr[i];
+    }
+    cout << "OUTPUT : "; 
+    for(i=0; i<N; i++) {
+       cout << arr[i] << " ";
+    }
+    cout << endl;
+    cout << "Key is the element to be Searched" << endl;
+    cout << "Enter Key : ";
+    cin >> key;
+    for(i=0; i<N; i++) {
+       if(key==arr[i]) {
+          cout << "Element fount at index " << i << endl;
+          count++;
+       }
+    }
+    if(count==0)
+    cout << "Element NOT Found" << i << endl;
+    else
+    cout << "Element Found " << count << " time" << endl;
+    return 0;
+}
