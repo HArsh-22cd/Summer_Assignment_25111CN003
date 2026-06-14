@@ -1,0 +1,54 @@
+#include<iostream>
+using namespace std;
+int main() {
+    int i, j, N, M, count=0;
+cout << "N is the number of element you want in the array" << endl;
+cout << "Enter N: ";
+cin >> N;
+int arr1[N];
+cout << "Enter each elements of the Array : " << endl;;
+for(i=0; i<N; i++) {
+       cin >> arr1[i];
+}
+cout << "OUTPUT : "; 
+for(i=0; i<N; i++) {
+       cout << arr1[i] << " ";
+}
+cout << endl;   
+cout << "M is the number of element you want in the array" << endl;
+cout << "Enter M: ";
+cin >> M;
+int arr2[M];
+cout << "Enter each elements of the Array : " << endl;;
+for(j=0; j<M; j++) {
+       cin >> arr2[j];
+ }
+cout << "OUTPUT : "; 
+for(j=0; j<M; j++) {
+       cout << arr2[j] << " ";
+}
+cout << endl;
+int merge[N+M];
+ for(i = 0; i < N; i++)
+        merge[i] = arr1[i];
+    for(j = 0; j < M; j++)
+        merge[N + j] = arr2[j];
+    cout << "Merged Array: ";
+    for(i = 0; i < N + M; i++)
+        cout << merge[i] << " ";
+    cout << endl;
+    bool visited[N+M];
+    for(int k = 0; k < M; k++)
+    visited[k] = false; 
+    cout << "Common Elements : ";
+    for(i = 0; i < N; i++) {
+            for(j = 0; j < M; j++) {
+                 if(arr1[i] == arr2[j] && visited[j] == false) {
+                 cout << arr1[i] << " ";
+                 visited[j] = true;
+                 break;
+                }
+            }
+        }
+    return 0;
+}
