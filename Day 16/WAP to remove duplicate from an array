@@ -1,0 +1,35 @@
+#include<iostream>
+using namespace std;
+int main () {
+      int N, i, j;
+    cout << "N is the number of elements in Array" << endl;
+    cout << "Enter N : ";
+    cin >> N;
+    int arr[N];
+    bool visited[N];
+    cout << "Enter each elements of the Array : " << endl;;
+    for(i=0; i<N; i++) {
+       cin >> arr[i];
+       visited[i] = false;
+    }
+    cout << "OUTPUT : "; 
+    for(i=0; i<N; i++) {
+       cout << arr[i] << " ";
+    }
+    cout << endl;
+    cout << "Array after removing duplicates: ";
+    for(i = 0; i < N; i++) {
+        if(visited[i] == false) {  
+            int count = 1;
+            for(j = i+1; j < N; j++) {
+                if(arr[i] == arr[j]) {
+                    count++;
+                    visited[j] = true; 
+                }
+            }
+            if(count == 1)
+            cout << arr[i] << " ";
+        }
+    }
+    return 0;
+}
