@@ -5,7 +5,7 @@ int main() {
     int r, c;
     cout << "Enter rows: ";
     cin >> r;
-    cout << "Enter coloumns: ";
+    cout << "Enter columns: ";
     cin >> c;
 
     int A[r][c];
