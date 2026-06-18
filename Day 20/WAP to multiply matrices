@@ -4,11 +4,11 @@ int main() {
     int r1, c1, r2, c2;
     cout << "Enter rows of first matrix: ";
     cin >> r1;
-    cout << "Enter coloumns of first matrix: ";
+    cout << "Enter columns of first matrix: ";
     cin >> c1;
     cout << "Enter rows second matrix: ";
     cin >> r2;
-    cout << "Enter coloumns second matrix: ";
+    cout << "Enter columns second matrix: ";
     cin >> c2;
     if (c1 != r2) {
         cout << "Matrix multiplication not possible! (columns of A must equal rows of B)" << endl;
