@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+int main() {
+    string s;
+    cout << "Enter a string: ";
+    getline(cin, s);
+    int freq[256] = {0};
+    for (int i = 0; i < s.length(); i++) {
+        freq[(int)s[i]]++;
+    }
+    int pos = -1;
+    for (int i = 0; i < s.length(); i++) {
+        if (freq[(int)s[i]] == 1) {
+            pos = i;
+            break;
+        }
+    }
+    if (pos != -1)
+        cout << "First non-repeating character: " << s[pos] << endl;
+    else
+        cout << "No non-repeating character found" << endl;
+
+    return 0;
+}
