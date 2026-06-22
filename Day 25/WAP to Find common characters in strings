@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int main() {
+    string s1, s2;
+    cout << "Enter first string: ";
+    cin >> s1;
+    cout << "Enter second string: ";
+    cin >> s2;
+    int freq1[256] = {0};
+    int freq2[256] = {0};
+    for (int i = 0; i < s1.length(); i++) {
+        freq1[s1[i]]++;
+    }
+    for (int i = 0; i < s2.length(); i++) {
+        freq2[s2[i]]++;
+    }
+    cout << "Common characters: ";
+    for (int ch = 0; ch < 256; ch++) {
+        if (freq1[ch] > 0 && freq2[ch] > 0) {
+            int commonCount = min(freq1[ch], freq2[ch]);
+            for (int k = 0; k < commonCount; k++) {
+                cout << (char)ch << " ";
+            }
+        }
+    }
+    cout << endl;
+    return 0;
+}
