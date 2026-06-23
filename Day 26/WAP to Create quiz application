@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int main() {
+    string questions[5] = {
+        "What is the capital of India?",
+        "Which language is used for STL in C++?",
+        "What is the time complexity of binary search?",
+        "Which keyword is used to define a constant in C++?",
+        "What is the size of an int data type (in bytes) typically?"
+    };
+    string options[5][4] = {
+        {"a) Mumbai", "b) Delhi", "c) Chennai", "d) Kolkata"},
+        {"a) Python", "b) Java", "c) C++", "d) C"},
+        {"a) O(n)", "b) O(log n)", "c) O(n^2)", "d) O(1)"},
+        {"a) var", "b) let", "c) const", "d) static"},
+        {"a) 2", "b) 4", "c) 8", "d) 1"}
+    };
+    char correctAnswers[5] = {'b', 'c', 'b', 'c', 'b'};
+    char userAnswer;
+    int score = 0;
+    for (int i = 0; i < 5; i++) {
+        cout << "\nQ" << (i + 1) << ". " << questions[i] << endl;
+        for (int j = 0; j < 4; j++) {
+            cout << options[i][j] << endl;
+        }
+        cout << "Enter your answer (a/b/c/d): ";
+        cin >> userAnswer;
+
+        if (userAnswer == correctAnswers[i]) {
+            cout << "Correct!" << endl;
+            score++;
+        } else {
+            cout << "Wrong! Correct answer is: " << correctAnswers[i] << endl;
+        }
+    }
+    cout << "\n----- Quiz Over -----" << endl;
+    cout << "Your final score: " << score << " out of 5" << endl;
+    if (score == 5) {
+        cout << "Excellent! Perfect score!" << endl;
+    } else if (score >= 3) {
+        cout << "Good job!" << endl;
+    } else {
+        cout << "Better luck next time!" << endl;
+    }
+    return 0;
+}
