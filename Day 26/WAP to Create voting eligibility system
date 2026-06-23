@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+int main() {
+    string name;
+    int age;
+    cout << "Enter your name: ";
+    cin >> name;
+    cout << "Enter your age: ";
+    cin >> age;
+    if (age < 0 || age > 120) {
+        cout << "Invalid age entered." << endl;
+    } else if (age >= 18) {
+        cout << name << ", you are eligible to vote." << endl;
+    } else {
+        int yearsLeft = 18 - age;
+        cout << name << ", you are NOT eligible to vote." << endl;
+        cout << "You can vote after " << yearsLeft << " year(s)." << endl;
+    }
+    return 0;
+}
