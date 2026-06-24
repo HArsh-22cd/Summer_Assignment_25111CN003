@@ -1,0 +1,139 @@
+#include <iostream>
+#include <string>
+using namespace std;
+const int MAX_EMPLOYEES = 100;
+struct Salary {
+    int empId;
+    string name;
+    float basicPay;
+    float allowances;
+    float deductions;
+    float netSalary;
+};
+Salary records[MAX_EMPLOYEES];
+int recordCount = 0;
+float calculateNetSalary(float basic, float allowances, float deductions) {
+    return basic + allowances - deductions;
+}
+void addRecord() {
+    if (recordCount >= MAX_EMPLOYEES) {
+        cout << "Record list is full!\n";
+        return;
+    }
+    Salary s;
+    cout << "Enter Employee ID: ";
+    cin >> s.empId;
+    cout << "Enter Name: ";
+    cin.ignore();
+    getline(cin, s.name);
+    cout << "Enter Basic Pay: ";
+    cin >> s.basicPay;
+    cout << "Enter Allowances: ";
+    cin >> s.allowances;
+    cout << "Enter Deductions: ";
+    cin >> s.deductions;
+
+    s.netSalary = calculateNetSalary(s.basicPay, s.allowances, s.deductions);
+
+    records[recordCount] = s;
+    recordCount++;
+    cout << "Salary record added successfully! Net Salary = " << s.netSalary << "\n";
+}
+int findRecordIndex(int empId) {
+    for (int i = 0; i < recordCount; i++) {
+        if (records[i].empId == empId)
+            return i;
+    }
+    return -1;
+}
+void displayAll() {
+    if (recordCount == 0) {
+        cout << "No records found.\n";
+        return;
+    }
+    cout << "\n--- All Salary Records ---\n";
+    cout << "ID\tName\t\tBasic\tAllow\tDeduct\tNet Salary\n";
+    for (int i = 0; i < recordCount; i++) {
+        cout << records[i].empId << "\t" << records[i].name << "\t\t"
+             << records[i].basicPay << "\t" << records[i].allowances << "\t"
+             << records[i].deductions << "\t" << records[i].netSalary << "\n";
+    }
+}
+void searchRecord() {
+    int empId;
+    cout << "Enter Employee ID to search: ";
+    cin >> empId;
+    int idx = findRecordIndex(empId);
+    if (idx == -1) {
+        cout << "Record not found!\n";
+    } else {
+        cout << "ID: " << records[idx].empId << ", Name: " << records[idx].name
+             << ", Basic Pay: " << records[idx].basicPay
+             << ", Allowances: " << records[idx].allowances
+             << ", Deductions: " << records[idx].deductions
+             << ", Net Salary: " << records[idx].netSalary << "\n";
+    }
+}
+void updateRecord() {
+    int empId;
+    cout << "Enter Employee ID to update: ";
+    cin >> empId;
+    int idx = findRecordIndex(empId);
+    if (idx == -1) {
+        cout << "Record not found!\n";
+        return;
+    }
+    cout << "Enter new Basic Pay: ";
+    cin >> records[idx].basicPay;
+    cout << "Enter new Allowances: ";
+    cin >> records[idx].allowances;
+    cout << "Enter new Deductions: ";
+    cin >> records[idx].deductions;
+
+    records[idx].netSalary = calculateNetSalary(records[idx].basicPay,
+                                                 records[idx].allowances,
+                                                 records[idx].deductions);
+    cout << "Record updated successfully! New Net Salary = " << records[idx].netSalary << "\n";
+}
+void deleteRecord() {
+    int empId;
+    cout << "Enter Employee ID to delete: ";
+    cin >> empId;
+    int idx = findRecordIndex(empId);
+    if (idx == -1) {
+        cout << "Record not found!\n";
+        return;
+    }
+    for (int i = idx; i < recordCount - 1; i++) {
+        records[i] = records[i + 1];
+    }
+    recordCount--;
+    cout << "Record deleted successfully!\n";
+}
+void menu() {
+    cout << "\n===== Salary Management System =====\n";
+    cout << "1. Add Salary Record\n";
+    cout << "2. Display All Records\n";
+    cout << "3. Search Record by Employee ID\n";
+    cout << "4. Update Record\n";
+    cout << "5. Delete Record\n";
+    cout << "6. Exit\n";
+    cout << "Enter your choice: ";
+}
+int main() {
+    int choice;
+    do {
+        menu();
+        cin >> choice;
+        switch (choice) {
+            case 1: addRecord(); break;
+            case 2: displayAll(); break;
+            case 3: searchRecord(); break;
+            case 4: updateRecord(); break;
+            case 5: deleteRecord(); break;
+            case 6: cout << "Exiting program...\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+    } while (choice != 6);
+    return 0;
+}
