@@ -1,0 +1,149 @@
+#include <iostream>
+#include <string>
+using namespace std;
+const int MAX_STUDENTS = 100;
+const int NUM_SUBJECTS = 5;
+struct Marksheet {
+    int rollNo;
+    string name;
+    float marks[NUM_SUBJECTS];
+    float total;
+    float percentage;
+    char grade;
+};
+Marksheet records[MAX_STUDENTS];
+int recordCount = 0;
+char calculateGrade(float percentage) {
+    if (percentage >= 90) return 'A';
+    else if (percentage >= 75) return 'B';
+    else if (percentage >= 60) return 'C';
+    else if (percentage >= 40) return 'D';
+    else return 'F';
+}
+
+void calculateResult(Marksheet &m) {
+    float sum = 0;
+    for (int i = 0; i < NUM_SUBJECTS; i++) {
+        sum += m.marks[i];
+    }
+    m.total = sum;
+    m.percentage = (sum / (NUM_SUBJECTS * 100)) * 100;
+    m.grade = calculateGrade(m.percentage);
+}
+void addRecord() {
+    if (recordCount >= MAX_STUDENTS) {
+        cout << "Marksheet list is full!\n";
+        return;
+    }
+    Marksheet m;
+    cout << "Enter Roll Number: ";
+    cin >> m.rollNo;
+    cout << "Enter Name: ";
+    cin.ignore();
+    getline(cin, m.name);
+    for (int i = 0; i < NUM_SUBJECTS; i++) {
+        cout << "Enter marks for Subject " << (i + 1) << " (out of 100): ";
+        cin >> m.marks[i];
+    }
+    calculateResult(m);
+    records[recordCount] = m;
+    recordCount++;
+    cout << "Marksheet generated successfully!\n";
+}
+int findRecordIndex(int rollNo) {
+    for (int i = 0; i < recordCount; i++) {
+        if (records[i].rollNo == rollNo)
+            return i;
+    }
+    return -1;
+}
+void displayMarksheet(const Marksheet &m) {
+    cout << "\n-------- MARKSHEET --------\n";
+    cout << "Roll No   : " << m.rollNo << "\n";
+    cout << "Name      : " << m.name << "\n";
+    for (int i = 0; i < NUM_SUBJECTS; i++) {
+        cout << "Subject " << (i + 1) << " : " << m.marks[i] << "\n";
+    }
+    cout << "Total     : " << m.total << " / " << (NUM_SUBJECTS * 100) << "\n";
+    cout << "Percentage: " << m.percentage << "%\n";
+    cout << "Grade     : " << m.grade << "\n";
+    cout << "----------------------------\n";
+}
+void displayAll() {
+    if (recordCount == 0) {
+        cout << "No records found.\n";
+        return;
+    }
+    for (int i = 0; i < recordCount; i++) {
+        displayMarksheet(records[i]);
+    }
+}
+void searchRecord() {
+    int rollNo;
+    cout << "Enter Roll Number to search: ";
+    cin >> rollNo;
+    int idx = findRecordIndex(rollNo);
+    if (idx == -1) {
+        cout << "Record not found!\n";
+    } else {
+        displayMarksheet(records[idx]);
+    }
+}
+void updateRecord() {
+    int rollNo;
+    cout << "Enter Roll Number to update: ";
+    cin >> rollNo;
+    int idx = findRecordIndex(rollNo);
+    if (idx == -1) {
+        cout << "Record not found!\n";
+        return;
+    }
+    for (int i = 0; i < NUM_SUBJECTS; i++) {
+        cout << "Enter new marks for Subject " << (i + 1) << " (out of 100): ";
+        cin >> records[idx].marks[i];
+    }
+    calculateResult(records[idx]);
+    cout << "Marksheet updated successfully!\n";
+}
+void deleteRecord() {
+    int rollNo;
+    cout << "Enter Roll Number to delete: ";
+    cin >> rollNo;
+    int idx = findRecordIndex(rollNo);
+    if (idx == -1) {
+        cout << "Record not found!\n";
+        return;
+    }
+    for (int i = idx; i < recordCount - 1; i++) {
+        records[i] = records[i + 1];
+    }
+    recordCount--;
+    cout << "Record deleted successfully!\n";
+}
+void menu() {
+    cout << "\n===== Marksheet Generation System =====\n";
+    cout << "1. Add Student & Generate Marksheet\n";
+    cout << "2. Display All Marksheets\n";
+    cout << "3. Search Marksheet by Roll Number\n";
+    cout << "4. Update Marks\n";
+    cout << "5. Delete Record\n";
+    cout << "6. Exit\n";
+    cout << "Enter your choice: ";
+}
+int main() {
+    int choice;
+    do {
+        menu();
+        cin >> choice;
+        switch (choice) {
+            case 1: addRecord(); break;
+            case 2: displayAll(); break;
+            case 3: searchRecord(); break;
+            case 4: updateRecord(); break;
+            case 5: deleteRecord(); break;
+            case 6: cout << "Exiting program...\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+    } while (choice != 6);
+    return 0;
+}
