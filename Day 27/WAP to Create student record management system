@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string>
+using namespace std;
+const int MAX_STUDENTS = 100;
+struct Student {
+    int roll;
+    string name;
+    float marks;
+};
+Student students[MAX_STUDENTS];
+int studentCount = 0;
+void addStudent() {
+    if (studentCount >= MAX_STUDENTS) {
+        cout << "Record list is full!\n";
+        return;
+    }
+    Student s;
+    cout << "Enter Roll Number: ";
+    cin >> s.roll;
+    cout << "Enter Name: ";
+    cin.ignore();
+    getline(cin, s.name);
+    cout << "Enter Marks: ";
+    cin >> s.marks;
+    students[studentCount] = s;
+    studentCount++;
+    cout << "Student record added successfully!\n";
+}
+int findStudentIndex(int roll) {
+    for (int i = 0; i < studentCount; i++) {
+        if (students[i].roll == roll)
+            return i;
+    }
+    return -1;
+}
+void displayAll() {
+    if (studentCount == 0) {
+        cout << "No records found.\n";
+        return;
+    }
+    cout << "\n--- All Student Records ---\n";
+    cout << "Roll\tName\t\tMarks\n";
+    for (int i = 0; i < studentCount; i++) {
+        cout << students[i].roll << "\t" << students[i].name << "\t\t" << students[i].marks << "\n";
+    }
+}
+void searchStudent() {
+    int roll;
+    cout << "Enter Roll Number to search: ";
+    cin >> roll;
+    int idx = findStudentIndex(roll);
+    if (idx == -1) {
+        cout << "Student not found!\n";
+    } else {
+        cout << "Roll: " << students[idx].roll << ", Name: " << students[idx].name
+             << ", Marks: " << students[idx].marks << "\n";
+    }
+}
+void updateStudent() {
+    int roll;
+    cout << "Enter Roll Number to update: ";
+    cin >> roll;
+    int idx = findStudentIndex(roll);
+    if (idx == -1) {
+        cout << "Student not found!\n";
+        return;
+    }
+    cout << "Enter new Name: ";
+    cin.ignore();
+    getline(cin, students[idx].name);
+    cout << "Enter new Marks: ";
+    cin >> students[idx].marks;
+    cout << "Record updated successfully!\n";
+}
+void deleteStudent() {
+    int roll;
+    cout << "Enter Roll Number to delete: ";
+    cin >> roll;
+    int idx = findStudentIndex(roll);
+    if (idx == -1) {
+        cout << "Student not found!\n";
+        return;
+    }
+    for (int i = idx; i < studentCount - 1; i++) {
+        students[i] = students[i + 1];
+    }
+    studentCount--;
+    cout << "Record deleted successfully!\n";
+}
+void menu() {
+    cout << "\n===== Student Record Management System =====\n";
+    cout << "1. Add Student\n";
+    cout << "2. Display All Students\n";
+    cout << "3. Search Student by Roll Number\n";
+    cout << "4. Update Student\n";
+    cout << "5. Delete Student\n";
+    cout << "6. Exit\n";
+    cout << "Enter your choice: ";
+}
+int main() {
+    int choice;
+    do {
+        menu();
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addStudent(); break;
+            case 2: displayAll(); break;
+            case 3: searchStudent(); break;
+            case 4: updateStudent(); break;
+            case 5: deleteStudent(); break;
+            case 6: cout << "Exiting program...\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+    } while (choice != 6);
+    return 0;
+}
