@@ -1,0 +1,189 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Contact {
+private:
+    int contactID;
+    string name;
+    string phoneNumber;
+    string email;
+
+public:
+    Contact() {
+        contactID = 0;
+        name = "";
+        phoneNumber = "";
+        email = "";
+    }
+
+    void addContact(int id, string n, string phone, string e) {
+        contactID = id;
+        name = n;
+        phoneNumber = phone;
+        email = e;
+    }
+
+    void updateContact(string phone, string e) {
+        phoneNumber = phone;
+        email = e;
+        cout << "Contact \"" << name << "\" updated successfully.\n";
+    }
+
+    void display() const {
+        cout << "ID: " << contactID
+             << " | Name: " << name
+             << " | Phone: " << phoneNumber
+             << " | Email: " << email
+             << endl;
+    }
+
+    int getID() const {
+        return contactID;
+    }
+
+    string getName() const {
+        return name;
+    }
+};
+
+class ContactBook {
+private:
+    Contact contacts[100];
+    int count;
+
+public:
+    ContactBook() {
+        count = 0;
+    }
+
+    void addContact() {
+        int id;
+        string name, phone, email;
+
+        cout << "Enter Contact ID: ";
+        cin >> id;
+        cout << "Enter Name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter Phone Number: ";
+        getline(cin, phone);
+        cout << "Enter Email: ";
+        getline(cin, email);
+
+        contacts[count].addContact(id, name, phone, email);
+        count++;
+        cout << "Contact added successfully.\n";
+    }
+
+    int findContactIndex(int id) {
+        for (int i = 0; i < count; i++) {
+            if (contacts[i].getID() == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void updateContact() {
+        int id;
+        string phone, email;
+        cout << "Enter Contact ID to update: ";
+        cin >> id;
+
+        int idx = findContactIndex(id);
+        if (idx != -1) {
+            cout << "Enter New Phone Number: ";
+            cin.ignore();
+            getline(cin, phone);
+            cout << "Enter New Email: ";
+            getline(cin, email);
+            contacts[idx].updateContact(phone, email);
+        } else {
+            cout << "Contact not found.\n";
+        }
+    }
+
+    void deleteContact() {
+        int id;
+        cout << "Enter Contact ID to delete: ";
+        cin >> id;
+
+        int idx = findContactIndex(id);
+        if (idx != -1) {
+            cout << "Contact \"" << contacts[idx].getName() << "\" deleted successfully.\n";
+            for (int i = idx; i < count - 1; i++) {
+                contacts[i] = contacts[i + 1];
+            }
+            count--;
+        } else {
+            cout << "Contact not found.\n";
+        }
+    }
+
+    void searchContact() {
+        int id;
+        cout << "Enter Contact ID to search: ";
+        cin >> id;
+
+        int idx = findContactIndex(id);
+        if (idx != -1) {
+            contacts[idx].display();
+        } else {
+            cout << "Contact not found.\n";
+        }
+    }
+
+    void displayAllContacts() {
+        if (count == 0) {
+            cout << "No contacts found.\n";
+            return;
+        }
+        cout << "\n--- Contact List ---\n";
+        for (int i = 0; i < count; i++) {
+            contacts[i].display();
+        }
+    }
+};
+
+int main() {
+    ContactBook book;
+    int choice;
+
+    do {
+        cout << "\n===== Contact Management System =====\n";
+        cout << "1. Add Contact\n";
+        cout << "2. Update Contact\n";
+        cout << "3. Delete Contact\n";
+        cout << "4. Search Contact\n";
+        cout << "5. Display All Contacts\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                book.addContact();
+                break;
+            case 2:
+                book.updateContact();
+                break;
+            case 3:
+                book.deleteContact();
+                break;
+            case 4:
+                book.searchContact();
+                break;
+            case 5:
+                book.displayAllContacts();
+                break;
+            case 6:
+                cout << "Exiting program.\n";
+                break;
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 6);
+
+    return 0;
+}
