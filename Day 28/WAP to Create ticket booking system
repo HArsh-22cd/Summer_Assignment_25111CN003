@@ -1,0 +1,177 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Ticket {
+private:
+    int ticketID;
+    string passengerName;
+    int seatNumber;
+    bool isBooked;
+
+public:
+    Ticket() {
+        ticketID = 0;
+        passengerName = "";
+        seatNumber = 0;
+        isBooked = false;
+    }
+
+    void initSeat(int id, int seat) {
+        ticketID = id;
+        seatNumber = seat;
+        isBooked = false;
+        passengerName = "";
+    }
+
+    void bookTicket(string name) {
+        if (isBooked) {
+            cout << "Seat " << seatNumber << " is already booked.\n";
+            return;
+        }
+        passengerName = name;
+        isBooked = true;
+        cout << "Seat " << seatNumber << " booked successfully for " << name << ".\n";
+    }
+
+    void cancelTicket() {
+        if (!isBooked) {
+            cout << "Seat " << seatNumber << " is not booked.\n";
+            return;
+        }
+        cout << "Booking for " << passengerName << " on seat " << seatNumber << " cancelled.\n";
+        passengerName = "";
+        isBooked = false;
+    }
+
+    void display() const {
+        cout << "Seat No: " << seatNumber
+             << " | Status: " << (isBooked ? "Booked" : "Available")
+             << (isBooked ? (" | Passenger: " + passengerName) : "")
+             << endl;
+    }
+
+    int getSeatNumber() const {
+        return seatNumber;
+    }
+
+    bool getStatus() const {
+        return isBooked;
+    }
+};
+
+class BookingSystem {
+private:
+    Ticket seats[50];
+    int totalSeats;
+
+public:
+    BookingSystem(int n) {
+        totalSeats = n;
+        for (int i = 0; i < totalSeats; i++) {
+            seats[i].initSeat(i + 1, i + 1);
+        }
+    }
+
+    int findSeatIndex(int seatNo) {
+        for (int i = 0; i < totalSeats; i++) {
+            if (seats[i].getSeatNumber() == seatNo) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void bookTicket() {
+        int seatNo;
+        string name;
+        cout << "Enter Seat Number to book: ";
+        cin >> seatNo;
+
+        int idx = findSeatIndex(seatNo);
+        if (idx != -1) {
+            cout << "Enter Passenger Name: ";
+            cin.ignore();
+            getline(cin, name);
+            seats[idx].bookTicket(name);
+        } else {
+            cout << "Invalid seat number.\n";
+        }
+    }
+
+    void cancelTicket() {
+        int seatNo;
+        cout << "Enter Seat Number to cancel: ";
+        cin >> seatNo;
+
+        int idx = findSeatIndex(seatNo);
+        if (idx != -1) {
+            seats[idx].cancelTicket();
+        } else {
+            cout << "Invalid seat number.\n";
+        }
+    }
+
+    void displayAllSeats() {
+        cout << "\n--- Seat Status ---\n";
+        for (int i = 0; i < totalSeats; i++) {
+            seats[i].display();
+        }
+    }
+
+    void displayAvailableSeats() {
+        cout << "\n--- Available Seats ---\n";
+        bool found = false;
+        for (int i = 0; i < totalSeats; i++) {
+            if (!seats[i].getStatus()) {
+                seats[i].display();
+                found = true;
+            }
+        }
+        if (!found) {
+            cout << "No seats available.\n";
+        }
+    }
+};
+
+int main() {
+    int totalSeats;
+    cout << "Enter total number of seats: ";
+    cin >> totalSeats;
+
+    BookingSystem system(totalSeats);
+    int choice;
+
+    do {
+        cout << "\n===== Ticket Booking System =====\n";
+        cout << "1. Book Ticket\n";
+        cout << "2. Cancel Ticket\n";
+        cout << "3. Display All Seats\n";
+        cout << "4. Display Available Seats\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                system.bookTicket();
+                break;
+            case 2:
+                system.cancelTicket();
+                break;
+            case 3:
+                system.displayAllSeats();
+                break;
+            case 4:
+                system.displayAvailableSeats();
+                break;
+            case 5:
+                cout << "Exiting program.\n";
+                break;
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
