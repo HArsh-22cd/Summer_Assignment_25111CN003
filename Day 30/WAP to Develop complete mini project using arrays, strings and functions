@@ -1,0 +1,229 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// ---------- Global Data (Parallel Arrays) ----------
+int rollNo[100];
+string names[100];
+string subjects[100][5] = {};   // not used directly, kept simple below
+int marks[100][5];
+int totalStudents = 0;
+
+// ---------- Function Declarations ----------
+void addStudent();
+void displayAll();
+void searchStudent();
+void calculateResult(int idx);
+void sortByPercentage();
+void topperStudent();
+void countGrades();
+string toUpperStr(string s);
+bool isValidName(string s);
+
+// ---------- Main Menu ----------
+int main() {
+    int choice;
+
+    do {
+        cout << "\n----- STUDENT RESULT MANAGEMENT SYSTEM -----\n";
+        cout << "1. Add Student\n";
+        cout << "2. Display All Students\n";
+        cout << "3. Search Student by Roll No\n";
+        cout << "4. Sort Students by Percentage\n";
+        cout << "5. Show Topper\n";
+        cout << "6. Grade Distribution Count\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addStudent(); break;
+            case 2: displayAll(); break;
+            case 3: searchStudent(); break;
+            case 4: sortByPercentage(); break;
+            case 5: topperStudent(); break;
+            case 6: countGrades(); break;
+            case 0: cout << "Exiting program. Bye!\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
+
+// ---------- Function Definitions ----------
+
+// Validates that name contains only letters and spaces
+bool isValidName(string s) {
+    for (int i = 0; i < s.length(); i++) {
+        if (!((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z') || s[i] == ' '))
+            return false;
+    }
+    return true;
+}
+
+// Converts a string to uppercase (used for displaying names/grades nicely)
+string toUpperStr(string s) {
+    for (int i = 0; i < s.length(); i++) {
+        if (s[i] >= 'a' && s[i] <= 'z')
+            s[i] = s[i] - 'a' + 'A';
+    }
+    return s;
+}
+
+void addStudent() {
+    if (totalStudents >= 100) {
+        cout << "Records full!\n";
+        return;
+    }
+
+    int roll;
+    string name;
+
+    cout << "Enter Roll No: ";
+    cin >> roll;
+
+    // check duplicate roll number
+    for (int i = 0; i < totalStudents; i++) {
+        if (rollNo[i] == roll) {
+            cout << "Roll No already exists!\n";
+            return;
+        }
+    }
+
+    cout << "Enter Name (letters only): ";
+    cin.ignore();
+    getline(cin, name);
+
+    if (!isValidName(name)) {
+        cout << "Invalid name! Only letters and spaces allowed.\n";
+        return;
+    }
+
+    cout << "Enter marks for 5 subjects: ";
+    for (int i = 0; i < 5; i++)
+        cin >> marks[totalStudents][i];
+
+    rollNo[totalStudents] = roll;
+    names[totalStudents] = name;
+    totalStudents++;
+
+    cout << "Student added successfully!\n";
+}
+
+// Calculates percentage and grade for student at index idx
+void calculateResult(int idx) {
+    int total = 0;
+    for (int i = 0; i < 5; i++)
+        total += marks[idx][i];
+
+    float percentage = total / 5.0;
+    char grade;
+
+    if (percentage >= 90) grade = 'A';
+    else if (percentage >= 75) grade = 'B';
+    else if (percentage >= 60) grade = 'C';
+    else if (percentage >= 40) grade = 'D';
+    else grade = 'F';
+
+    cout << rollNo[idx] << "\t" << toUpperStr(names[idx]) << "\t\t";
+    for (int i = 0; i < 5; i++)
+        cout << marks[idx][i] << " ";
+    cout << "\t" << percentage << "%\t" << grade << endl;
+}
+
+void displayAll() {
+    if (totalStudents == 0) {
+        cout << "No records found!\n";
+        return;
+    }
+    cout << "\nRoll\tName\t\tMarks\t\t\tPercentage\tGrade\n";
+    cout << "------------------------------------------------------------------\n";
+    for (int i = 0; i < totalStudents; i++)
+        calculateResult(i);
+}
+
+void searchStudent() {
+    int roll;
+    cout << "Enter Roll No to search: ";
+    cin >> roll;
+
+    for (int i = 0; i < totalStudents; i++) {
+        if (rollNo[i] == roll) {
+            cout << "\nRoll\tName\t\tMarks\t\t\tPercentage\tGrade\n";
+            calculateResult(i);
+            return;
+        }
+    }
+    cout << "Student not found!\n";
+}
+
+// Helper to compute percentage of a student (used in sorting/topper)
+float getPercentage(int idx) {
+    int total = 0;
+    for (int i = 0; i < 5; i++)
+        total += marks[idx][i];
+    return total / 5.0;
+}
+
+void sortByPercentage() {
+    if (totalStudents == 0) {
+        cout << "No records found!\n";
+        return;
+    }
+
+    for (int i = 0; i < totalStudents - 1; i++) {
+        for (int j = 0; j < totalStudents - i - 1; j++) {
+            if (getPercentage(j) < getPercentage(j + 1)) {
+                // swap roll
+                swap(rollNo[j], rollNo[j + 1]);
+                // swap name
+                swap(names[j], names[j + 1]);
+                // swap marks array
+                for (int k = 0; k < 5; k++)
+                    swap(marks[j][k], marks[j + 1][k]);
+            }
+        }
+    }
+    cout << "Students sorted by percentage (descending)!\n";
+}
+
+void topperStudent() {
+    if (totalStudents == 0) {
+        cout << "No records found!\n";
+        return;
+    }
+
+    int topIdx = 0;
+    for (int i = 1; i < totalStudents; i++) {
+        if (getPercentage(i) > getPercentage(topIdx))
+            topIdx = i;
+    }
+
+    cout << "\nTopper:\n";
+    cout << "Roll\tName\t\tMarks\t\t\tPercentage\tGrade\n";
+    calculateResult(topIdx);
+}
+
+void countGrades() {
+    if (totalStudents == 0) {
+        cout << "No records found!\n";
+        return;
+    }
+
+    int countA = 0, countB = 0, countC = 0, countD = 0, countF = 0;
+
+    for (int i = 0; i < totalStudents; i++) {
+        float p = getPercentage(i);
+        if (p >= 90) countA++;
+        else if (p >= 75) countB++;
+        else if (p >= 60) countC++;
+        else if (p >= 40) countD++;
+        else countF++;
+    }
+
+    cout << "\nGrade Distribution:\n";
+    cout << "A: " << countA << "\nB: " << countB << "\nC: " << countC
+         << "\nD: " << countD << "\nF: " << countF << endl;
+}
