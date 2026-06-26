@@ -1,0 +1,205 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Product {
+public:
+    int id;
+    string name;
+    float price;
+    int quantity;
+
+    void setData(int i, string n, float p, int q) {
+        id = i;
+        name = n;
+        price = p;
+        quantity = q;
+    }
+
+    void display() {
+        cout << id << "\t" << name << "\t\t" << price << "\t\t" << quantity << endl;
+    }
+};
+
+class Inventory {
+private:
+    Product products[100];
+    int count;
+
+public:
+    Inventory() {
+        count = 0;
+    }
+
+    void addProduct() {
+        if (count >= 100) {
+            cout << "Inventory full!\n";
+            return;
+        }
+
+        int id, qty;
+        string name;
+        float price;
+
+        cout << "Enter Product ID: ";
+        cin >> id;
+        cout << "Enter Product Name: ";
+        cin >> name;
+        cout << "Enter Price: ";
+        cin >> price;
+        cout << "Enter Quantity: ";
+        cin >> qty;
+
+        products[count].setData(id, name, price, qty);
+        count++;
+        cout << "Product added successfully!\n";
+    }
+
+    int findProductIndex(int id) {
+        for (int i = 0; i < count; i++) {
+            if (products[i].id == id)
+                return i;
+        }
+        return -1;
+    }
+
+    void displayAll() {
+        if (count == 0) {
+            cout << "Inventory is empty!\n";
+            return;
+        }
+        cout << "\nID\tName\t\tPrice\t\tQuantity\n";
+        cout << "---------------------------------------------\n";
+        for (int i = 0; i < count; i++)
+            products[i].display();
+    }
+
+    void searchProduct() {
+        int id;
+        cout << "Enter Product ID to search: ";
+        cin >> id;
+
+        int idx = findProductIndex(id);
+        if (idx == -1) {
+            cout << "Product not found!\n";
+            return;
+        }
+        cout << "\nID\tName\t\tPrice\t\tQuantity\n";
+        products[idx].display();
+    }
+
+    void updateProduct() {
+        int id;
+        cout << "Enter Product ID to update: ";
+        cin >> id;
+
+        int idx = findProductIndex(id);
+        if (idx == -1) {
+            cout << "Product not found!\n";
+            return;
+        }
+
+        float price;
+        int qty;
+        cout << "Enter new Price: ";
+        cin >> price;
+        cout << "Enter new Quantity: ";
+        cin >> qty;
+
+        products[idx].price = price;
+        products[idx].quantity = qty;
+        cout << "Product updated successfully!\n";
+    }
+
+    void deleteProduct() {
+        int id;
+        cout << "Enter Product ID to delete: ";
+        cin >> id;
+
+        int idx = findProductIndex(id);
+        if (idx == -1) {
+            cout << "Product not found!\n";
+            return;
+        }
+
+        for (int i = idx; i < count - 1; i++)
+            products[i] = products[i + 1];
+
+        count--;
+        cout << "Product deleted successfully!\n";
+    }
+
+    void sellProduct() {
+        int id, qty;
+        cout << "Enter Product ID to sell: ";
+        cin >> id;
+
+        int idx = findProductIndex(id);
+        if (idx == -1) {
+            cout << "Product not found!\n";
+            return;
+        }
+
+        cout << "Enter quantity to sell: ";
+        cin >> qty;
+
+        if (qty > products[idx].quantity) {
+            cout << "Insufficient stock! Available: " << products[idx].quantity << endl;
+            return;
+        }
+
+        products[idx].quantity -= qty;
+        cout << "Sale recorded. Remaining stock: " << products[idx].quantity << endl;
+    }
+
+    void lowStockAlert() {
+        int threshold;
+        cout << "Enter stock threshold: ";
+        cin >> threshold;
+
+        bool found = false;
+        cout << "\nProducts below threshold:\n";
+        for (int i = 0; i < count; i++) {
+            if (products[i].quantity < threshold) {
+                products[i].display();
+                found = true;
+            }
+        }
+        if (!found)
+            cout << "No products below threshold.\n";
+    }
+};
+
+int main() {
+    Inventory inv;
+    int choice;
+
+    do {
+        cout << "\n----- INVENTORY MANAGEMENT SYSTEM -----\n";
+        cout << "1. Add Product\n";
+        cout << "2. Display All Products\n";
+        cout << "3. Search Product\n";
+        cout << "4. Update Product\n";
+        cout << "5. Delete Product\n";
+        cout << "6. Sell Product (Reduce Stock)\n";
+        cout << "7. Low Stock Alert\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: inv.addProduct(); break;
+            case 2: inv.displayAll(); break;
+            case 3: inv.searchProduct(); break;
+            case 4: inv.updateProduct(); break;
+            case 5: inv.deleteProduct(); break;
+            case 6: inv.sellProduct(); break;
+            case 7: inv.lowStockAlert(); break;
+            case 0: cout << "Exiting program. Bye!\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
