@@ -1,0 +1,237 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Employee {
+public:
+    int empId;
+    string name;
+    string department;
+    float salary;
+    int yearsOfService;
+
+    void setData(int id, string n, string dept, float sal, int yrs) {
+        empId = id;
+        name = n;
+        department = dept;
+        salary = sal;
+        yearsOfService = yrs;
+    }
+
+    float calculateBonus() {
+        // 5% of salary per year of service, capped at 50%
+        float bonusPercent = yearsOfService * 5;
+        if (bonusPercent > 50)
+            bonusPercent = 50;
+        return (salary * bonusPercent) / 100;
+    }
+
+    void display() {
+        cout << empId << "\t" << name << "\t\t" << department << "\t\t"
+             << salary << "\t\t" << yearsOfService << endl;
+    }
+};
+
+class EmployeeManager {
+private:
+    Employee employees[100];
+    int count;
+
+public:
+    EmployeeManager() {
+        count = 0;
+    }
+
+    int findEmployeeIndex(int id) {
+        for (int i = 0; i < count; i++) {
+            if (employees[i].empId == id)
+                return i;
+        }
+        return -1;
+    }
+
+    void addEmployee() {
+        if (count >= 100) {
+            cout << "Employee records full!\n";
+            return;
+        }
+
+        int id, yrs;
+        string name, dept;
+        float sal;
+
+        cout << "Enter Employee ID: ";
+        cin >> id;
+
+        if (findEmployeeIndex(id) != -1) {
+            cout << "Employee with this ID already exists!\n";
+            return;
+        }
+
+        cout << "Enter Name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter Department: ";
+        getline(cin, dept);
+        cout << "Enter Salary: ";
+        cin >> sal;
+        cout << "Enter Years of Service: ";
+        cin >> yrs;
+
+        employees[count].setData(id, name, dept, sal, yrs);
+        count++;
+        cout << "Employee added successfully!\n";
+    }
+
+    void displayAll() {
+        if (count == 0) {
+            cout << "No employee records found!\n";
+            return;
+        }
+        cout << "\nID\tName\t\tDept\t\tSalary\t\tYears\n";
+        cout << "---------------------------------------------------------\n";
+        for (int i = 0; i < count; i++)
+            employees[i].display();
+    }
+
+    void searchEmployee() {
+        int id;
+        cout << "Enter Employee ID to search: ";
+        cin >> id;
+
+        int idx = findEmployeeIndex(id);
+        if (idx == -1) {
+            cout << "Employee not found!\n";
+            return;
+        }
+        cout << "\nID\tName\t\tDept\t\tSalary\t\tYears\n";
+        employees[idx].display();
+    }
+
+    void updateEmployee() {
+        int id;
+        cout << "Enter Employee ID to update: ";
+        cin >> id;
+
+        int idx = findEmployeeIndex(id);
+        if (idx == -1) {
+            cout << "Employee not found!\n";
+            return;
+        }
+
+        float sal;
+        string dept;
+        cout << "Enter new Department: ";
+        cin.ignore();
+        getline(cin, dept);
+        cout << "Enter new Salary: ";
+        cin >> sal;
+
+        employees[idx].department = dept;
+        employees[idx].salary = sal;
+        cout << "Employee updated successfully!\n";
+    }
+
+    void deleteEmployee() {
+        int id;
+        cout << "Enter Employee ID to delete: ";
+        cin >> id;
+
+        int idx = findEmployeeIndex(id);
+        if (idx == -1) {
+            cout << "Employee not found!\n";
+            return;
+        }
+
+        for (int i = idx; i < count - 1; i++)
+            employees[i] = employees[i + 1];
+
+        count--;
+        cout << "Employee deleted successfully!\n";
+    }
+
+    void showBonus() {
+        int id;
+        cout << "Enter Employee ID to calculate bonus: ";
+        cin >> id;
+
+        int idx = findEmployeeIndex(id);
+        if (idx == -1) {
+            cout << "Employee not found!\n";
+            return;
+        }
+
+        cout << employees[idx].name << "'s Bonus = " << employees[idx].calculateBonus() << endl;
+    }
+
+    void highestPaidEmployee() {
+        if (count == 0) {
+            cout << "No employee records found!\n";
+            return;
+        }
+
+        int topIdx = 0;
+        for (int i = 1; i < count; i++) {
+            if (employees[i].salary > employees[topIdx].salary)
+                topIdx = i;
+        }
+
+        cout << "\nHighest Paid Employee:\n";
+        cout << "ID\tName\t\tDept\t\tSalary\t\tYears\n";
+        employees[topIdx].display();
+    }
+
+    void sortBySalary() {
+        if (count == 0) {
+            cout << "No employee records found!\n";
+            return;
+        }
+
+        for (int i = 0; i < count - 1; i++) {
+            for (int j = 0; j < count - i - 1; j++) {
+                if (employees[j].salary < employees[j + 1].salary) {
+                    Employee temp = employees[j];
+                    employees[j] = employees[j + 1];
+                    employees[j + 1] = temp;
+                }
+            }
+        }
+        cout << "Employees sorted by salary (descending)!\n";
+    }
+};
+
+int main() {
+    EmployeeManager mgr;
+    int choice;
+
+    do {
+        cout << "\n----- EMPLOYEE MANAGEMENT SYSTEM -----\n";
+        cout << "1. Add Employee\n";
+        cout << "2. Display All Employees\n";
+        cout << "3. Search Employee\n";
+        cout << "4. Update Employee\n";
+        cout << "5. Delete Employee\n";
+        cout << "6. Calculate Bonus\n";
+        cout << "7. Show Highest Paid Employee\n";
+        cout << "8. Sort by Salary\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: mgr.addEmployee(); break;
+            case 2: mgr.displayAll(); break;
+            case 3: mgr.searchEmployee(); break;
+            case 4: mgr.updateEmployee(); break;
+            case 5: mgr.deleteEmployee(); break;
+            case 6: mgr.showBonus(); break;
+            case 7: mgr.highestPaidEmployee(); break;
+            case 8: mgr.sortBySalary(); break;
+            case 0: cout << "Exiting program. Bye!\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
