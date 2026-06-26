@@ -1,0 +1,156 @@
+#include <iostream>
+using namespace std;
+
+int arr[100];
+int size = 0;
+
+void inputArray() {
+    cout << "Enter size of array: ";
+    cin >> size;
+    cout << "Enter " << size << " elements: ";
+    for (int i = 0; i < size; i++)
+        cin >> arr[i];
+}
+
+void displayArray() {
+    if (size == 0) {
+        cout << "Array is empty!\n";
+        return;
+    }
+    cout << "Array elements: ";
+    for (int i = 0; i < size; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+}
+
+void insertElement() {
+    if (size >= 100) {
+        cout << "Array is full!\n";
+        return;
+    }
+    int pos, val;
+    cout << "Enter position (0 to " << size << "): ";
+    cin >> pos;
+    cout << "Enter value to insert: ";
+    cin >> val;
+
+    if (pos < 0 || pos > size) {
+        cout << "Invalid position!\n";
+        return;
+    }
+
+    for (int i = size; i > pos; i--)
+        arr[i] = arr[i - 1];
+
+    arr[pos] = val;
+    size++;
+    cout << "Inserted successfully!\n";
+}
+
+void deleteElement() {
+    if (size == 0) {
+        cout << "Array is empty!\n";
+        return;
+    }
+    int pos;
+    cout << "Enter position to delete (0 to " << size - 1 << "): ";
+    cin >> pos;
+
+    if (pos < 0 || pos >= size) {
+        cout << "Invalid position!\n";
+        return;
+    }
+
+    for (int i = pos; i < size - 1; i++)
+        arr[i] = arr[i + 1];
+
+    size--;
+    cout << "Deleted successfully!\n";
+}
+
+void searchElement() {
+    if (size == 0) {
+        cout << "Array is empty!\n";
+        return;
+    }
+    int key;
+    cout << "Enter element to search: ";
+    cin >> key;
+
+    bool found = false;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == key) {
+            cout << "Element found at index " << i << endl;
+            found = true;
+            break;
+        }
+    }
+    if (!found)
+        cout << "Element not found!\n";
+}
+
+void sortArray() {
+    if (size == 0) {
+        cout << "Array is empty!\n";
+        return;
+    }
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    cout << "Array sorted successfully!\n";
+}
+
+void reverseArray() {
+    if (size == 0) {
+        cout << "Array is empty!\n";
+        return;
+    }
+    int start = 0, end = size - 1;
+    while (start < end) {
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+        start++;
+        end--;
+    }
+    cout << "Array reversed successfully!\n";
+}
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n----- ARRAY OPERATIONS MENU -----\n";
+        cout << "1. Input Array\n";
+        cout << "2. Display Array\n";
+        cout << "3. Insert Element\n";
+        cout << "4. Delete Element\n";
+        cout << "5. Search Element\n";
+        cout << "6. Sort Array\n";
+        cout << "7. Reverse Array\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: inputArray(); break;
+            case 2: displayArray(); break;
+            case 3: insertElement(); break;
+            case 4: deleteElement(); break;
+            case 5: searchElement(); break;
+            case 6: sortArray(); break;
+            case 7: reverseArray(); break;
+            case 0: cout << "Exiting program. Bye!\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
