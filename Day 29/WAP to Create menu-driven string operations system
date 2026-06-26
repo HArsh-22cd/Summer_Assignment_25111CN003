@@ -1,0 +1,123 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+void lengthOfString(char str[]) {
+    int len = 0;
+    while (str[len] != '\0')
+        len++;
+    cout << "Length of string = " << len << endl;
+}
+
+void reverseString(char str[]) {
+    int start = 0, end = strlen(str) - 1;
+    while (start < end) {
+        swap(str[start], str[end]);
+        start++;
+        end--;
+    }
+    cout << "Reversed string = " << str << endl;
+}
+
+void toUpperCase(char str[]) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] >= 'a' && str[i] <= 'z')
+            str[i] = str[i] - 'a' + 'A';
+    }
+    cout << "Uppercase string = " << str << endl;
+}
+
+void toLowerCase(char str[]) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] >= 'A' && str[i] <= 'Z')
+            str[i] = str[i] - 'A' + 'a';
+    }
+    cout << "Lowercase string = " << str << endl;
+}
+
+void isPalindrome(char str[]) {
+    int start = 0, end = strlen(str) - 1;
+    bool palindrome = true;
+
+    while (start < end) {
+        if (str[start] != str[end]) {
+            palindrome = false;
+            break;
+        }
+        start++;
+        end--;
+    }
+
+    if (palindrome)
+        cout << str << " is a Palindrome.\n";
+    else
+        cout << str << " is NOT a Palindrome.\n";
+}
+
+void countVowelsConsonants(char str[]) {
+    int vowels = 0, consonants = 0;
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        char ch = str[i];
+        if (ch >= 'A' && ch <= 'Z')
+            ch = ch - 'A' + 'a';   // normalize to lowercase
+
+        if (ch >= 'a' && ch <= 'z') {
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
+                vowels++;
+            else
+                consonants++;
+        }
+    }
+
+    cout << "Vowels = " << vowels << ", Consonants = " << consonants << endl;
+}
+
+void concatenateStrings(char str1[]) {
+    char str2[100];
+    cout << "Enter second string: ";
+    cin.ignore();
+    cin.getline(str2, 100);
+
+    strcat(str1, str2);
+    cout << "Concatenated string = " << str1 << endl;
+}
+
+int main() {
+    char str[100];
+    int choice;
+
+    cout << "Enter a string: ";
+    cin.getline(str, 100);
+
+    do {
+        cout << "\n----- STRING OPERATIONS MENU -----\n";
+        cout << "1. Find Length\n";
+        cout << "2. Reverse String\n";
+        cout << "3. Convert to Uppercase\n";
+        cout << "4. Convert to Lowercase\n";
+        cout << "5. Check Palindrome\n";
+        cout << "6. Count Vowels & Consonants\n";
+        cout << "7. Concatenate Another String\n";
+        cout << "8. Display Current String\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: lengthOfString(str); break;
+            case 2: reverseString(str); break;
+            case 3: toUpperCase(str); break;
+            case 4: toLowerCase(str); break;
+            case 5: isPalindrome(str); break;
+            case 6: countVowelsConsonants(str); break;
+            case 7: concatenateStrings(str); break;
+            case 8: cout << "Current string = " << str << endl; break;
+            case 0: cout << "Exiting program. Bye!\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
