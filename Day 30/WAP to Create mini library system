@@ -1,0 +1,224 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Book {
+public:
+    int bookId;
+    string title;
+    string author;
+    bool isIssued;
+    string issuedTo;
+
+    void setData(int id, string t, string a) {
+        bookId = id;
+        title = t;
+        author = a;
+        isIssued = false;
+        issuedTo = "";
+    }
+
+    void display() {
+        cout << bookId << "\t" << title << "\t\t" << author << "\t\t"
+             << (isIssued ? "Issued (" + issuedTo + ")" : "Available") << endl;
+    }
+};
+
+class Library {
+private:
+    Book books[100];
+    int count;
+
+public:
+    Library() {
+        count = 0;
+    }
+
+    int findBookIndex(int id) {
+        for (int i = 0; i < count; i++) {
+            if (books[i].bookId == id)
+                return i;
+        }
+        return -1;
+    }
+
+    void addBook() {
+        if (count >= 100) {
+            cout << "Library is full!\n";
+            return;
+        }
+
+        int id;
+        string title, author;
+
+        cout << "Enter Book ID: ";
+        cin >> id;
+
+        if (findBookIndex(id) != -1) {
+            cout << "Book with this ID already exists!\n";
+            return;
+        }
+
+        cout << "Enter Title: ";
+        cin.ignore();
+        getline(cin, title);
+        cout << "Enter Author: ";
+        getline(cin, author);
+
+        books[count].setData(id, title, author);
+        count++;
+        cout << "Book added successfully!\n";
+    }
+
+    void displayAll() {
+        if (count == 0) {
+            cout << "No books in library!\n";
+            return;
+        }
+        cout << "\nID\tTitle\t\tAuthor\t\tStatus\n";
+        cout << "---------------------------------------------------\n";
+        for (int i = 0; i < count; i++)
+            books[i].display();
+    }
+
+    void searchBook() {
+        int id;
+        cout << "Enter Book ID to search: ";
+        cin >> id;
+
+        int idx = findBookIndex(id);
+        if (idx == -1) {
+            cout << "Book not found!\n";
+            return;
+        }
+        cout << "\nID\tTitle\t\tAuthor\t\tStatus\n";
+        books[idx].display();
+    }
+
+    void issueBook() {
+        int id;
+        cout << "Enter Book ID to issue: ";
+        cin >> id;
+
+        int idx = findBookIndex(id);
+        if (idx == -1) {
+            cout << "Book not found!\n";
+            return;
+        }
+
+        if (books[idx].isIssued) {
+            cout << "Book is already issued to " << books[idx].issuedTo << endl;
+            return;
+        }
+
+        string name;
+        cout << "Enter name of person issuing: ";
+        cin.ignore();
+        getline(cin, name);
+
+        books[idx].isIssued = true;
+        books[idx].issuedTo = name;
+        cout << "Book issued successfully!\n";
+    }
+
+    void returnBook() {
+        int id;
+        cout << "Enter Book ID to return: ";
+        cin >> id;
+
+        int idx = findBookIndex(id);
+        if (idx == -1) {
+            cout << "Book not found!\n";
+            return;
+        }
+
+        if (!books[idx].isIssued) {
+            cout << "This book was not issued!\n";
+            return;
+        }
+
+        books[idx].isIssued = false;
+        books[idx].issuedTo = "";
+        cout << "Book returned successfully!\n";
+    }
+
+    void deleteBook() {
+        int id;
+        cout << "Enter Book ID to delete: ";
+        cin >> id;
+
+        int idx = findBookIndex(id);
+        if (idx == -1) {
+            cout << "Book not found!\n";
+            return;
+        }
+
+        for (int i = idx; i < count - 1; i++)
+            books[i] = books[i + 1];
+
+        count--;
+        cout << "Book deleted successfully!\n";
+    }
+
+    void showAvailableBooks() {
+        bool found = false;
+        cout << "\nAvailable Books:\n";
+        for (int i = 0; i < count; i++) {
+            if (!books[i].isIssued) {
+                books[i].display();
+                found = true;
+            }
+        }
+        if (!found)
+            cout << "No books currently available!\n";
+    }
+
+    void showIssuedBooks() {
+        bool found = false;
+        cout << "\nIssued Books:\n";
+        for (int i = 0; i < count; i++) {
+            if (books[i].isIssued) {
+                books[i].display();
+                found = true;
+            }
+        }
+        if (!found)
+            cout << "No books currently issued!\n";
+    }
+};
+
+int main() {
+    Library lib;
+    int choice;
+
+    do {
+        cout << "\n----- MINI LIBRARY SYSTEM -----\n";
+        cout << "1. Add Book\n";
+        cout << "2. Display All Books\n";
+        cout << "3. Search Book\n";
+        cout << "4. Issue Book\n";
+        cout << "5. Return Book\n";
+        cout << "6. Delete Book\n";
+        cout << "7. Show Available Books\n";
+        cout << "8. Show Issued Books\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: lib.addBook(); break;
+            case 2: lib.displayAll(); break;
+            case 3: lib.searchBook(); break;
+            case 4: lib.issueBook(); break;
+            case 5: lib.returnBook(); break;
+            case 6: lib.deleteBook(); break;
+            case 7: lib.showAvailableBooks(); break;
+            case 8: lib.showIssuedBooks(); break;
+            case 0: cout << "Exiting program. Bye!\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
